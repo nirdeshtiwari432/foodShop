@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Method Selection</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Payment Method Selection</h1>
+
+        <label>Payment Method:</label><br>
+        <input type="radio" id="cash" name="payment_method" value="cash" checked>
+        <label for="cash">Cash</label><br>
+        <input type="radio" id="online" name="payment_method" value="online">
+        <label for="online">Online</label><br> 
+
+        <button onclick="proceedToCheckout()">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        function proceedToCheckout() {
+            // Get the selected payment method
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            // Redirect to checkout page with selected payment method as parameter
+            window.location.href = "checkout.php?payment_method=" + paymentMethod;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        .message {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .qr{
+         width: 100px;
+         height: 100px;
+     }
+     #code{
+        margin-left: 300px;
+     }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message">
+            <h2>Your order has been successfully placed!</h2>
+            <p>Thank you for choosing our food delivery service.</p>
+            <p>Your order will be delivered to you shortly.</p>
+            <p><a href="index.html">Back to Home</a></p>
+        </div>
+    </div>
+    <div id = "code">
+    <img class = "qr" src="https://www.pngall.com/wp-content/uploads/2/QR-Code-PNG-HD-Image.png" alt="">
+    <p>Scan QR for online payment </p>
+    <p>Or you can pay by cash </p>
+   
+    </div>
+   
+</body>
+<?php
+   include "connect.php"; 
+
+// Retrieve data from the POST request (assuming the data is sent via a form)
+$product_name = $_POST['product_name'];
+$amount = $_POST['amount'];
+$customar_name = $_POST['customer_name'];
+$location = $_POST['location'];
+$payment_type = $_POST['payment_type'];
+
+// Prepare and bind the SQL statement
+$sql = "INSERT INTO `order` (product_name, amount, customar_name, location,payment_type) 
+        VALUES (?, ?, ?, ?,?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("sssss", $product_name, $amount, $customar_name, $location,$payment_type);
+
+// Execute the statement
+if ($stmt->execute()) {
+    echo "order placed successfully";
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+// Close the connection
+$stmt->close();
+$conn->close();
+?>
+<div class="container">
+        <h2>For online Payment</h2>
+        <h2>Enter Transaction ID</h2>
+        <form action="process_transaction.php" method="post">
+            <label for="transaction_id">Transaction ID:</label><br>
+            <input type="text" id="transaction_id" name="transaction_id" required><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</html>
